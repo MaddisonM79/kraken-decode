@@ -117,6 +117,12 @@ Speed was not the goal; not being able to crash was. On the saves above, through
 
 Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) first. One rule there matters more than the rest: nobody who works on this crate may read the GPL decoders' source to do it.
 
+## Acknowledgements
+
+Every rule in this decoder was checked against `ooz-wasm` (GPL-3.0-or-later), a WebAssembly build of powzix's `ooz`, run as a black box. Its source was not read and none of its code is here, but this crate could not have been verified without it.
+
+Thanks also to Fabian Giesen for his public articles on the format's design.
+
 ## License
 
 [MIT](https://github.com/MaddisonM79/kraken-decode/blob/main/LICENSE).
