@@ -17,13 +17,13 @@ env:
   RUST_BACKTRACE: 1
 
 jobs:
-  publish:
-    name: Publish to crates.io
+  # The GitHub release, with the WebAssembly module and the JavaScript loader.
+  # It does not depend on crates.io.
+  release:
+    name: GitHub release
     runs-on: ubuntu-latest
-    environment: crates-io
     permissions:
       contents: write
-      id-token: write
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -68,14 +68,6 @@ jobs:
 
       - run: cargo publish -p kraken-decode --dry-run
 
-      - uses: rust-lang/crates-io-auth-action@c6f97d42243bad5fab37ca0427f495c86d5b1a18 # v1.0.5
-        id: auth
-
-      - name: Publish to crates.io
-        env:
-          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
-        run: cargo publish -p kraken-decode
-
       - name: Extract changelog section
         run: |
           set -euo pipefail
@@ -104,3 +96,32 @@ jobs:
             --notes-file release-notes.md \
             $prerelease_flag \
             release/kraken-decode.mjs release/kraken-decode.d.mts release/kraken-decode.wasm release/SHA256SUMS
+
+  # crates.io, by trusted publishing. Off until the repository variable
+  # CRATES_IO_TRUSTED_PUBLISHING is "true": crates.io only lets a trusted
+  # publisher be set on a crate that exists, so the first version is
+  # published by hand.
+  publish:
+    name: Publish to crates.io
+    needs: release
+    if: vars.CRATES_IO_TRUSTED_PUBLISHING == 'true'
+    runs-on: ubuntu-latest
+    environment: crates-io
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # master
+        with:
+          toolchain: stable
+
+      - uses: rust-lang/crates-io-auth-action@c6f97d42243bad5fab37ca0427f495c86d5b1a18 # v1.0.5
+        id: auth
+
+      - name: Publish to crates.io
+        env:
+          CARGO_REGISTRY_TOKEN: ${{ steps.auth.outputs.token }}
+        run: cargo publish -p kraken-decode

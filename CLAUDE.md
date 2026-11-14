@@ -82,6 +82,9 @@ cargo +nightly fuzz run decode -- -max_total_time=300
 - Every `uses:` in the workflows is pinned to a commit SHA with its tag in a comment.
 - Commits are signed through 1Password; if signing fails, stop and tell Maddison. Push straight to
   `main`. No AI attribution in commits or PRs. A release (a `v*` tag) needs her word.
+  The tag's workflow makes the GitHub release (the wasm and loader files); its crates.io job is
+  off until the repository variable `CRATES_IO_TRUSTED_PUBLISHING` is `true`, which waits on
+  Maddison publishing the first version by hand and adding the trusted publisher.
 - The name avoids "Oodle" (Epic's trademark). Docs may say what the crate is compatible with,
   descriptively, and that it is not affiliated.
 
