@@ -1,0 +1,23 @@
+[package]
+name = "kraken-decode-fuzz"
+version = "0.0.0"
+edition = "2021"
+publish = false
+license = "MIT"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+kraken-decode = { path = ".." }
+
+[[bin]]
+name = "decode"
+path = "fuzz_targets/decode.rs"
+test = false
+doc = false
+bench = false
+
+# Its own workspace: cargo-fuzz needs nightly, the crate does not.
+[workspace]

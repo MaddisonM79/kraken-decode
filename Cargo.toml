@@ -1,0 +1,33 @@
+[package]
+name = "kraken-decode"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+license = "MIT"
+description = "Safe, clean-room decoder for the block-compressed streams in Palworld's Mac save files (compatible with the byte-oriented stream type of the Kraken family of formats). Decode only, no_std, no unsafe."
+authors = ["MaddisonM79"]
+repository = "https://github.com/MaddisonM79/kraken-decode"
+homepage = "https://github.com/MaddisonM79/kraken-decode"
+documentation = "https://docs.rs/kraken-decode"
+keywords = ["decompression", "decoder", "no_std", "palworld", "wasm"]
+categories = ["compression", "no-std", "wasm"]
+readme = "README.md"
+exclude = [".gitignore", ".github", "docs", "deny.toml", "fuzz", "js", "wasm", "tools"]
+
+[lib]
+name = "kraken_decode"
+
+[dependencies]
+
+[dev-dependencies]
+proptest = "1"
+
+[workspace]
+members = [".", "wasm"]
+exclude = ["fuzz"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"

@@ -1,0 +1,33 @@
+# Cargo build output
+/target
+debug/
+
+# Library crate: ignore Cargo.lock
+# https://doc.rust-lang.org/cargo/guide/cargo-toml-vs-cargo-lock.html
+Cargo.lock
+
+# The generated JavaScript module (js/build.mjs writes it; releases attach it)
+/js/dist
+
+# Fuzzer logs
+/fuzz-*.log
+
+# rustfmt backup files
+**/*.rs.bk
+
+# MSVC Windows debug info
+*.pdb
+
+# Editor / IDE
+/.vscode
+.idea/
+
+# macOS
+.DS_Store
+
+# Never commit a real save or a vector made from one. The only binary
+# fixtures allowed are the ones under tests/fixtures (see CONTRIBUTING.md).
+*.sav
+*.kdv
+!/tests/fixtures/*.sav
+!/tests/fixtures/*.kdv

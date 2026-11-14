@@ -1,0 +1,31 @@
+{
+  "name": "kraken-decode",
+  "version": "0.1.0",
+  "description": "Clean-room decoder for the block-compressed streams in Palworld's Mac save files. WebAssembly, no dependencies.",
+  "license": "MIT",
+  "author": "MaddisonM79",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaddisonM79/kraken-decode.git",
+    "directory": "js"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./dist/kraken-decode.mjs"
+    }
+  },
+  "types": "./index.d.ts",
+  "files": [
+    "index.d.ts",
+    "dist/kraken-decode.mjs"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "test": "node --test test.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,14 @@
+[package]
+name = "kraken-decode-wasm"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.87"
+license = "MIT"
+publish = false
+description = "The WebAssembly build of kraken-decode: three exported functions and no JavaScript glue."
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+kraken-decode = { path = ".." }
