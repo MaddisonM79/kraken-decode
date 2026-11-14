@@ -7,7 +7,6 @@ license = "MIT"
 description = "Safe, clean-room decoder for the block-compressed streams in Palworld's Mac save files (compatible with the byte-oriented stream type of the Kraken family of formats). Decode only, no_std, no unsafe."
 authors = ["MaddisonM79"]
 repository = "https://github.com/MaddisonM79/kraken-decode"
-homepage = "https://github.com/MaddisonM79/kraken-decode"
 documentation = "https://docs.rs/kraken-decode"
 keywords = ["decompression", "decoder", "no_std", "palworld", "wasm"]
 categories = ["compression", "no-std", "wasm"]

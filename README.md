@@ -119,4 +119,4 @@ Please read [`CONTRIBUTING.md`](CONTRIBUTING.md) first. One rule there matters m
 
 ## License
 
-[MIT](LICENSE).
+[MIT](https://github.com/MaddisonM79/kraken-decode/blob/main/LICENSE).
