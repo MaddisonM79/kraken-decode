@@ -3,18 +3,27 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  # Releases a tag that already exists, built from that tag's source with this
+  # version of the workflow. For a tag whose own run failed.
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: An existing tag to release, such as v0.1.0
+        required: true
+        type: string
 
 permissions:
   contents: read
 
 concurrency:
-  group: release-${{ github.ref }}
+  group: release-${{ inputs.tag || github.ref_name }}
   cancel-in-progress: false
 
 env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
   RUST_BACKTRACE: 1
+  TAG: ${{ inputs.tag || github.ref_name }}
 
 jobs:
   # The GitHub release, with the WebAssembly module and the JavaScript loader.
@@ -26,7 +35,17 @@ jobs:
       contents: write
 
     steps:
+      - name: Check the tag's name
+        run: |
+          set -euo pipefail
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Not a release tag: $TAG"
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag || github.ref_name }}
 
       - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # master
         with:
@@ -37,7 +56,7 @@ jobs:
       - name: Verify tag matches Cargo.toml version
         run: |
           set -euo pipefail
-          tag="${GITHUB_REF_NAME#v}"
+          tag="${TAG#v}"
           manifest=$(cargo metadata --no-deps --format-version 1 \
             | jq -r '.packages[] | select(.name == "kraken-decode") | .version')
           if [ "$tag" != "$manifest" ]; then
@@ -49,6 +68,10 @@ jobs:
       - run: cargo clippy --workspace --all-targets -- -D warnings
       - run: cargo test
       - run: cargo test --release
+
+      # Before anything below writes files into the checkout: cargo refuses to
+      # package a tree with uncommitted files.
+      - run: cargo publish -p kraken-decode --dry-run
 
       # The WebAssembly module and the single-file JavaScript loader, attached
       # to the release for consumers that do not build Rust.
@@ -66,12 +89,10 @@ jobs:
           (cd release && sha256sum kraken-decode.mjs kraken-decode.d.mts kraken-decode.wasm > SHA256SUMS)
           cat release/SHA256SUMS
 
-      - run: cargo publish -p kraken-decode --dry-run
-
       - name: Extract changelog section
         run: |
           set -euo pipefail
-          version="${GITHUB_REF_NAME#v}"
+          version="${TAG#v}"
           awk -v v="$version" '
             $0 ~ "^## \\[" v "\\]" {found=1; next}
             found && /^## \[/ {exit}
@@ -88,11 +109,12 @@ jobs:
         run: |
           set -euo pipefail
           prerelease_flag=""
-          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+          if [[ "$TAG" == *-* ]]; then
             prerelease_flag="--prerelease"
           fi
-          gh release create "$GITHUB_REF_NAME" \
-            --title "$GITHUB_REF_NAME" \
+          gh release create "$TAG" \
+            --verify-tag \
+            --title "$TAG" \
             --notes-file release-notes.md \
             $prerelease_flag \
             release/kraken-decode.mjs release/kraken-decode.d.mts release/kraken-decode.wasm release/SHA256SUMS
@@ -112,7 +134,17 @@ jobs:
       id-token: write
 
     steps:
+      - name: Check the tag's name
+        run: |
+          set -euo pipefail
+          if ! [[ "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.]+)?$ ]]; then
+            echo "::error::Not a release tag: $TAG"
+            exit 1
+          fi
+
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: refs/tags/${{ inputs.tag || github.ref_name }}
 
       - uses: dtolnay/rust-toolchain@6c977a6ca4077a0ceb28ffbe03f59d46e9ac8772 # master
         with:
