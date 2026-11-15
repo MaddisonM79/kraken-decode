@@ -80,9 +80,6 @@ cargo +nightly fuzz run decode -- -max_total_time=300
   `expect_used` and `panic` denied. The only `unsafe` is the FFI in `wasm/src/lib.rs`.
 - No runtime dependencies. `deny.toml` bans the GPL decoders by name.
 - Every `uses:` in the workflows is pinned to a commit SHA with its tag in a comment.
-- Commits here are authored as `MaddisonM79` with her GitHub noreply address (this clone's own
-  `user.name` and `user.email`; check `git config user.email` in a new clone before committing).
-  Her full name and personal address stay out of the files and the history.
 - Commits are signed through 1Password; if signing fails, stop and tell Maddison. Push straight to
   `main`. No AI attribution in commits or PRs. A release (a `v*` tag) needs her word.
   The tag's workflow makes the GitHub release (the wasm and loader files); its crates.io job is
