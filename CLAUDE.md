@@ -60,7 +60,7 @@ cargo build -p kraken-decode-wasm --target wasm32-unknown-unknown --release && n
 
 # Private parity (needs the samples and the reference; neither is in the repo):
 KRAKEN_PARITY_DIR=~/.local/share/kraken-decode/samples \
-KRAKEN_PARITY_ORACLE=~/github/MaddisonM79/ryna_agent/cores/palworld/node_modules/ooz-wasm/index.js \
+KRAKEN_PARITY_ORACLE=~/.local/share/kraken-decode/reference/ooz-wasm/index.js \
 node tools/parity.mjs
 
 KRAKEN_FUZZ_ITERS=1000000 cargo test --test no_panic     # debug build: overflow checks on
