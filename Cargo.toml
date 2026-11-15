@@ -1,6 +1,6 @@
 [package]
 name = "kraken-decode"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 rust-version = "1.87"
 license = "MIT"
@@ -11,7 +11,7 @@ documentation = "https://docs.rs/kraken-decode"
 keywords = ["decompression", "decoder", "no_std", "palworld", "wasm"]
 categories = ["compression", "no-std", "wasm"]
 readme = "README.md"
-exclude = [".gitignore", ".github", "docs", "deny.toml", "fuzz", "js", "wasm", "tools"]
+exclude = [".gitignore", ".github", "CLAUDE.md", "deny.toml", "fuzz", "js", "wasm", "tools"]
 
 [lib]
 name = "kraken_decode"

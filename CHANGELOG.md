@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2026-11-14
+## [0.1.1] - 2026-11-14
+
+The first published version. 0.1.0 was a GitHub release only, and was withdrawn
+the same day: the same decoder, with the crate package put right (it now
+carries `docs/`, and no longer the repository's agent notes).
 
 ### Added
 
