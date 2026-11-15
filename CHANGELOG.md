@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-15
+
+No change to the decoder or its API. This is the first version the release
+workflow published to crates.io itself, through trusted publishing; 0.1.1 was
+uploaded by hand.
+
 ## [0.1.1] - 2026-11-14
 
 The first published version. 0.1.0 was a GitHub release only, and was withdrawn
